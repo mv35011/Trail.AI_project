@@ -1,0 +1,7 @@
+Flask
+scikit-learn
+torch
+transformers
+numpy
+pandas
+joblib
