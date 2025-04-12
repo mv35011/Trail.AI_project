@@ -4,27 +4,27 @@ your_project/
 │   ├── routes/
 │   │   ├── __init__.py
 │   │   └── tool1.py              # Add more tool routes
-│   ├── templates/                # Jinja templates for frontend
+│   ├── templates/                # Jinja templates
 │   ├── static/                   # CSS/JS/Images
 │   └── utils/                    # Common helper functions
 │       └── preprocess.py
 │
-├── models/                       # ML models and code
+├── models/
 │   ├── sklearn/                 # scikit-learn models
 │   │   ├── model.pkl
 │   │   └── inference.py
-│   ├── tensorflow/
+│   ├── tensorflow/              # tf-models
 │   │   ├── model.h5
 │   │   └── inference.py
-│   ├── pytorch/
+│   ├── pytorch/                 #pt-models
 │   │   ├── model.pt
 │   │   └── inference.py
 │   └── transformers/            # Hugging Face Transformers
 │       ├── model_config/
 │       └── inference.py
 │
-├── requirements.txt             # Python dependencies
-├── Dockerfile                   # Docker build instructions
-├── docker-compose.yml           # Optional: Manage services
+├── requirements.txt             # Dependencies
+├── Dockerfile                   # Docker
+├── docker-compose.yml           # MongoDB
 ├── run.py                       # Entrypoint for Flask
 └── README.md
