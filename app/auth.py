@@ -24,8 +24,15 @@ def register():
     dept = request.form['department']
     cgpa = request.form['cgpa']
     skills = request.form.getlist('skills')
-    resume = request.form.files['resume']
+    resume = request.files['resume']
     about_yourself = request.form['about_yourself']
+    linkedin = request.form['Linkedin']
+    github = request.form['github']
+    profile_image = request.files['profile_image']
+    file_name = secure_filename(profile_image.filename)
+    profile_path = os.path.join('media/ProfileImage', file_name)
+    profile_image.save(profile_path)
+
     unique_name= generate_unique_filename(name, secure_filename((resume.filename)))
     resume_path = os.path.join('media/resume', unique_name)
     resume.save(resume_path)
@@ -36,6 +43,9 @@ def register():
     user_data = {
         "name":name,
         "email": email,
+        "linkedin": linkedin,
+        "github": github,
+        "profile_image": profile_image,
         "department": dept,
         "cgpa":cgpa,
         "skills":skills,
@@ -45,4 +55,4 @@ def register():
 
     }
     users_collection.insert_one(user_data)
-    return "Registered successfully"
+    return redirect('/dashboard')

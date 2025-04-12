@@ -49,3 +49,8 @@ def replace_resume():
             }}
         )
         return redirect(url_for('dashboard'))
+
+@views.route('/dashboard', methods=['POST', 'GET'])
+def dashboard():
+    sorted_users = list(users_collection.find().sort("resume_score", -1))
+    return render_template("dashboard.html", users=sorted_users)
