@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up as Student</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --primary-hover: #384ec0;
+            --secondary-color: #f8f9fa;
+            --text-color: #212529;
+            --text-muted: #6c757d;
+            --border-color: #dee2e6;
+            --border-radius: 0.5rem;
+            --box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 2rem;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            font-weight: 500;
+            color: var(--text-color);
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .form-control {
+            display: block;
+            width: 100%;
+            padding: 0.75rem;
+            font-size: 1rem;
+            line-height: 1.5;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        }
+
+        .form-file-label {
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            background-color: var(--secondary-color);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 0.75rem;
+            font-size: 1rem;
+            transition: var(--transition);
+            width: fit-content;
+        }
+
+        .form-file-label:hover {
+            background-color: #e9ecef;
+        }
+
+        .form-file-input {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            width: 100%;
+            display: block;
+            text-align: center;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 0.5rem 0.75rem rgba(0, 0, 0, 0.1);
+        }
+
+        .error-message {
+            color: #dc3545;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .mt-3 {
+            margin-top: 1rem;
+        }
+
+        .small-text {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Sign Up as Student</h1>
+        <form id="studentSignupForm" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="studentName">Student Name</label>
+                <input type="text" id="studentName" name="studentName" class="form-control" placeholder="Enter your name" required>
+                <div id="studentNameError" class="error-message"></div>
+            </div>
+            <div class="form-group">
+                <label for="collegeName">College Name</label>
+                <input type="text" id="collegeName" name="collegeName" class="form-control" placeholder="Enter your college name" required>
+                <div id="collegeNameError" class="error-message"></div>
+            </div>
+            <div class="form-group">
+                <label for="collegeEmail">College Email</label>
+                <input type="email" id="collegeEmail" name="collegeEmail" class="form-control" placeholder="Enter your college email" required>
+                <div id="collegeEmailError" class="error-message"></div>
+            </div>
+            <div class="form-group">
+                <label for="skills">Skills</label>
+                <input type="text" id="skills" name="skills" class="form-control" placeholder="Enter your skills (comma-separated)" required>
+                <small class="text-muted">Please separate skills with commas (e.g., Java, Python, SQL)</small>
+                <div id="skillsError" class="error-message"></div>
+            </div>
+            <div class="form-group">
+                <label for="aboutYourself">About Yourself</label>
+                <textarea id="aboutYourself" name="aboutYourself" class="form-control" placeholder="Tell us about yourself" required></textarea>
+                <div id="aboutYourselfError" class="error-message"></div>
+            </div>
+            <div class="form-group">
+                <label for="resume">Upload Resume</label>
+                <label for="resume" class="form-file-label">
+                    <span class="file-icon">Choose File</span>
+                    <span class="file-name">No file chosen</span>
+                </label>
+                <input type="file" id="resume" name="resume" class="form-file-input" accept=".pdf,.doc,.docx" required>
+                <div id="resumeError" class="error-message"></div>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" class="form-control" placeholder="Enter your password" required>
+                <div id="passwordError" class="error-message"></div>
+            </div>
+            <div class="form-group">
+                <label for="confirmPassword">Confirm Password</label>
+                <input type="password" id="confirmPassword" name="confirmPassword" class="form-control" placeholder="Confirm your password" required>
+                <div id="confirmPasswordError" class="error-message"></div>
+            </div>
+            <button type="submit" class="btn btn-primary">Sign Up</button>
+            <div class="text-center mt-3">
+                <p class="small-text">Already have an account? <a href="index.html">Login</a></p>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        const studentSignupForm = document.getElementById('studentSignupForm');
+        const resumeInput = document.getElementById('resume');
+        const resumeLabel = document.querySelector('.form-file-label .file-name');
+
+        resumeInput.addEventListener('change', function() {
+            if (this.files && this.files[0]) {
+                resumeLabel.textContent = this.files[0].name;
+            } else {
+                resumeLabel.textContent = 'No file chosen';
+            }
+        });
+
+        studentSignupForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            let isValid = true;
+
+            const studentName = document.getElementById('studentName').value.trim();
+            const collegeName = document.getElementById('collegeName').value.trim();
+            const collegeEmail = document.getElementById('collegeEmail').value.trim();
+            const skills = document.getElementById('skills').value.trim();
+            const aboutYourself = document.getElementById('aboutYourself').value.trim();
+            const resume = document.getElementById('resume').files[0];
+            const password = document.getElementById('password').value.trim();
+            const confirmPassword = document.getElementById('confirmPassword').value.trim();
+
+            document.getElementById('studentNameError').textContent = studentName ? '' : 'Student Name is required';
+            document.getElementById('collegeNameError').textContent = collegeName ? '' : 'College Name is required';
+            document.getElementById('collegeEmailError').textContent = collegeEmail ? (isValidEmail(collegeEmail) ? '' : 'Invalid email format') : 'College Email is required';
+            document.getElementById('skillsError').textContent = skills ? '' : 'Skills are required';
+            document.getElementById('aboutYourselfError').textContent = aboutYourself ? '' : 'About Yourself is required';
+            document.getElementById('resumeError').textContent = resume ? '' : 'Resume is required';
+            document.getElementById('passwordError').textContent = password ? (password.length >= 8 ? '' : 'Password must be at least 8 characters') : 'Password is required';
+            document.getElementById('confirmPasswordError').textContent = confirmPassword ? (confirmPassword === password ? '' : 'Passwords do not match') : 'Confirm Password is required';
+
+            isValid = isValid && studentName && collegeName && collegeEmail && isValidEmail(collegeEmail) && skills && aboutYourself && resume && password && password.length >= 8 && confirmPassword && confirmPassword === password;
+
+            if (isValid) {
+                const formData = new FormData(studentSignupForm);
+                // Simulate sending data
+                console.log(Object.fromEntries(formData.entries()));
+                alert('Student sign up successful!');
+                window.location.href = 'dashboard.html';
+            }
+        });
+
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+    </script>
+</body>
+</html>

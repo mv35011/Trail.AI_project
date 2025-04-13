@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up as Student</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --primary-hover: #384ec0;
+            --secondary-color: #f8f9fa;
+            --text-color: #212529;
+            --text-muted: #6c757d;
+            --border-color: #dee2e6;
+            --border-radius: 0.5rem;
+            --box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+            --success-color: #4bb543;
+            --error-color: #ff3333;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 2rem;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            font-weight: 500;
+            color: var(--text-color);
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .form-control {
+            display: block;
+            width: 100%;
+            padding: 0.75rem;
+            font-size: 1rem;
+            line-height: 1.5;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        }
+
+        .form-file-wrapper {
+            position: relative;
+        }
+
+        .form-file-label {
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            background-color: var(--secondary-color);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 0.75rem;
+            font-size: 1rem;
+            transition: var(--transition);
+            width: fit-content;
+        }
+
+        .form-file-label:hover {
+            background-color: #e9ecef;
+        }
+
+        .form-file-input {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            width: 100%;
+            display: block;
+            text-align: center;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 0.5rem 0.75rem rgba(0, 0, 0, 0.1);
+        }
+
+        .error-message {
+            color: #dc3545;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .mt-3 {
+            margin-top: 1rem;
+        }
+
+        .small-text {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .flash-messages {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 20px;
+        }
+
+        .flash-message {
+            padding: 10px 15px;
+            margin-bottom: 10px;
+            border-radius: var(--border-radius);
+        }
+
+        .flash-message.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .flash-message.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .flash-message.info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Sign Up as Student</h1>
+
+        {% if get_flashed_messages() %}
+        <ul class="flash-messages">
+            {% for category, message in get_flashed_messages(with_categories=true) %}
+            <li class="flash-message {{ category }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+        <form id="studentSignupForm" method="POST" action="{{ url_for('auth.register') }}" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="studentName">Student Name</label>
+                <input type="text" id="studentName" name="studentName" class="form-control" placeholder="Enter your name" required>
+                <div id="studentNameError" class="error-message"></div>
+            </div>
+            <div class="form-group">
+                <label for="collegeName">College Name</label>
+                <input type="text" id="collegeName" name="collegeName" class="form-control" placeholder="Enter your college name" required>
+                <div id="collegeNameError" class="error-message"></div>
+            </div>
+            <div class="form-group">
+                <label for="collegeEmail">College Email</label>
+                <input type="email" id="collegeEmail" name="collegeEmail" class="form-control" placeholder="Enter your college email" required>
+                <div id="collegeEmailError" class="error-message"></div>
+            </div>
+            <div class="form-group">
+                <label for="department">Department</label>
+                <input type="text" id="department" name="department" class="form-control" placeholder="Enter your department (e.g., Computer Science)" required>
+                <div id="departmentError" class="error-message"></div>
+            </div>
+            <div class="form-group">
+                <label for="cgpa">CGPA</label>
+                <input type="text" id="cgpa" name="cgpa" class="form-control" placeholder="Enter your CGPA" required>
+                <div id="cgpaError" class="error-message"></div>
+            </div>
+            <div class="form-group">
+                <label for="skills">Skills</label>
+                <input type="text" id="skills" name="skills" class="form-control" placeholder="Enter your skills (comma-separated)" required>
+                <small class="text-muted">Please separate skills with commas (e.g., Java, Python, SQL)</small>
+                <div id="skillsError" class="error-message"></div>
+            </div>
+            <div class="form-group">
+                <label for="aboutYourself">About Yourself</label>
+                <textarea id="aboutYourself" name="aboutYourself" class="form-control" placeholder="Tell us about yourself" required></textarea>
+                <div id="aboutYourselfError" class="error-message"></div>
+            </div>
+            <div class="form-group">
+                <label for="linkedin">LinkedIn Profile URL</label>
+                <input type="url" id="linkedin" name="linkedin" class="form-control" placeholder="https://linkedin.com/in/your-profile">
+                <div id="linkedinError" class="error-message"></div>
+            </div>
+            <div class="form-group">
+                <label for="github">GitHub Profile URL</label>
+                <input type="url" id="github" name="github" class="form-control" placeholder="https://github.com/your-username">
+                <div id="githubError" class="error-message"></div>
+            </div>
+            <div class="form-group">
+                <label for="resume">Upload Resume</label>
+                <div class="form-file-wrapper">
+                    <label for="resume" class="form-file-label">
+                        <span class="file-icon">Choose File</span>
+                        <span class="file-name" id="resumeFileName">No file chosen</span>
+                    </label>
+                    <input type="file" id="resume" name="resume" class="form-file-input" accept=".pdf,.doc,.docx" required>
+                </div>
+                <div id="resumeError" class="error-message"></div>
+            </div>
+            <div class="form-group">
+                <label for="profile_image">Profile Image (Optional)</label>
+                <div class="form-file-wrapper">
+                    <label for="profile_image" class="form-file-label">
+                        <span class="file-icon">Choose File</span>
+                        <span class="file-name" id="profileImageFileName">No file chosen</span>
+                    </label>
+                    <input type="file" id="profile_image" name="profile_image" class="form-file-input" accept=".jpg,.jpeg,.png">
+                </div>
+                <div id="profileImageError" class="error-message"></div>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" class="form-control" placeholder="Enter your password" required>
+                <small class="text-muted">Password must be at least 8 characters long</small>
+                <div id="passwordError" class="error-message"></div>
+            </div>
+            <div class="form-group">
+                <label for="confirmPassword">Confirm Password</label>
+                <input type="password" id="confirmPassword" name="confirmPassword" class="form-control" placeholder="Confirm your password" required>
+                <div id="confirmPasswordError" class="error-message"></div>
+            </div>
+            <button type="submit" class="btn btn-primary">Sign Up</button>
+            <div class="text-center mt-3">
+                <p class="small-text">Already have an account? <a href="{{ url_for('auth.login') }}">Login</a></p>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        const studentSignupForm = document.getElementById('studentSignupForm');
+        const resumeInput = document.getElementById('resume');
+        const resumeFileName = document.getElementById('resumeFileName');
+        const profileImageInput = document.getElementById('profile_image');
+        const profileImageFileName = document.getElementById('profileImageFileName');
+
+        resumeInput.addEventListener('change', function() {
+            if (this.files && this.files[0]) {
+                resumeFileName.textContent = this.files[0].name;
+            } else {
+                resumeFileName.textContent = 'No file chosen';
+            }
+        });
+
+        profileImageInput.addEventListener('change', function() {
+            if (this.files && this.files[0]) {
+                profileImageFileName.textContent = this.files[0].name;
+            } else {
+                profileImageFileName.textContent = 'No file chosen';
+            }
+        });
+
+        studentSignupForm.addEventListener('submit', (event) => {
+            let isValid = true;
+
+            // Clear previous error messages
+            document.querySelectorAll('.error-message').forEach(el => el.textContent = '');
+
+            const studentName = document.getElementById('studentName').value.trim();
+            const collegeName = document.getElementById('collegeName').value.trim();
+            const collegeEmail = document.getElementById('collegeEmail').value.trim();
+            const department = document.getElementById('department').value.trim();
+            const cgpa = document.getElementById('cgpa').value.trim();
+            const skills = document.getElementById('skills').value.trim();
+            const aboutYourself = document.getElementById('aboutYourself').value.trim();
+            const resume = document.getElementById('resume').files[0];
+            const password = document.getElementById('password').value.trim();
+            const confirmPassword = document.getElementById('confirmPassword').value.trim();
+
+            // Validate student name
+            if (!studentName) {
+                document.getElementById('studentNameError').textContent = 'Student Name is required';
+                isValid = false;
+            }
+
+            // Validate college name
+            if (!collegeName) {
+                document.getElementById('collegeNameError').textContent = 'College Name is required';
+                isValid = false;
+            }
+
+            // Validate email
+            if (!collegeEmail) {
+                document.getElementById('collegeEmailError').textContent = 'College Email is required';
+                isValid = false;
+            } else if (!isValidEmail(collegeEmail)) {
+                document.getElementById('collegeEmailError').textContent = 'Invalid email format';
+                isValid = false;
+            }
+
+            // Validate department
+            if (!department) {
+                document.getElementById('departmentError').textContent = 'Department is required';
+                isValid = false;
+            }
+
+            // Validate CGPA
+            if (!cgpa) {
+                document.getElementById('cgpaError').textContent = 'CGPA is required';
+                isValid = false;
+            } else if (!isValidCGPA(cgpa)) {
+                document.getElementById('cgpaError').textContent = 'Invalid CGPA format (should be between 0.0 and 10.0)';
+                isValid = false;
+            }
+
+            // Validate skills
+            if (!skills) {
+                document.getElementById('skillsError').textContent = 'Skills are required';
+                isValid = false;
+            }
+
+            // Validate about yourself
+            if (!aboutYourself) {
+                document.getElementById('aboutYourselfError').textContent = 'Please tell us about yourself';
+                isValid = false;
+            }
+
+            // Validate resume
+            if (!resume) {
+                document.getElementById('resumeError').textContent = 'Resume is required';
+                isValid = false;
+            } else {
+                const acceptedFormats = ['.pdf', '.doc', '.docx'];
+                const fileExtension = resume.name.substring(resume.name.lastIndexOf('.')).toLowerCase();
+                if (!acceptedFormats.includes(fileExtension)) {
+                    document.getElementById('resumeError').textContent = 'Invalid resume format. Please upload PDF, DOC, or DOCX file';
+                    isValid = false;
+                }
+            }
+
+            // Validate LinkedIn URL if provided
+            const linkedin = document.getElementById('linkedin').value.trim();
+            if (linkedin && !isValidURL(linkedin)) {
+                document.getElementById('linkedinError').textContent = 'Please enter a valid URL';
+                isValid = false;
+            }
+
+            // Validate GitHub URL if provided
+            const github = document.getElementById('github').value.trim();
+            if (github && !isValidURL(github)) {
+                document.getElementById('githubError').textContent = 'Please enter a valid URL';
+                isValid = false;
+            }
+
+            // Validate profile image if provided
+            const profileImage = document.getElementById('profile_image').files[0];
+            if (profileImage) {
+                const acceptedFormats = ['.jpg', '.jpeg', '.png'];
+                const fileExtension = profileImage.name.substring(profileImage.name.lastIndexOf('.')).toLowerCase();
+                if (!acceptedFormats.includes(fileExtension)) {
+                    document.getElementById('profileImageError').textContent = 'Invalid image format. Please upload JPG, JPEG, or PNG file';
+                    isValid = false;
+                }
+            }
+
+            // Validate password
+            if (!password) {
+                document.getElementById('passwordError').textContent = 'Password is required';
+                isValid = false;
+            } else if (password.length < 8) {
+                document.getElementById('passwordError').textContent = 'Password must be at least 8 characters long';
+                isValid = false;
+            }
+
+            // Validate confirm password
+            if (!confirmPassword) {
+                document.getElementById('confirmPasswordError').textContent = 'Please confirm your password';
+                isValid = false;
+            } else if (password !== confirmPassword) {
+                document.getElementById('confirmPasswordError').textContent = 'Passwords do not match';
+                isValid = false;
+            }
+
+            if (!isValid) {
+                event.preventDefault();
+            }
+        });
+
+        // Helper functions
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+
+        function isValidCGPA(cgpa) {
+            const cgpaValue = parseFloat(cgpa);
+            return !isNaN(cgpaValue) && cgpaValue >= 0 && cgpaValue <= 10;
+        }
+
+        function isValidURL(url) {
+            try {
+                new URL(url);
+                return true;
+            } catch (error) {
+                return false;
+            }
+        }
+    </script>
+</body>
+</html>

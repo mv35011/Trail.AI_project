@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trail AI - Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+        /* Global Styles */
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3f37c9;
+            --accent-color: #4895ef;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+            --success-color: #4bb543;
+            --error-color: #ff3333;
+            --warning-color: #f0ad4e;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f7fb;
+            color: var(--dark-color);
+            line-height: 1.6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 500px;
+            width: 100%;
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 30px;
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 12px 24px;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            width: 100%;
+            text-align: center;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: var(--box-shadow);
+        }
+
+        .auth-form-footer {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .auth-form-footer p {
+            margin-top: 15px;
+        }
+
+        .auth-form-footer a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .auth-form-footer a:hover {
+            color: var(--secondary-color);
+        }
+
+        .error-message {
+            color: var(--error-color);
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+
+        .flash-messages {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 20px;
+        }
+
+        .flash-message {
+            padding: 10px 15px;
+            margin-bottom: 10px;
+            border-radius: var(--border-radius);
+        }
+
+        .flash-message.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .flash-message.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .flash-message.info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Login</h1>
+
+        {% if get_flashed_messages() %}
+        <ul class="flash-messages">
+            {% for category, message in get_flashed_messages(with_categories=true) %}
+            <li class="flash-message {{ category }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+        <form id="loginForm" method="POST" action="{{ url_for('login') }}">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" class="form-control" placeholder="Enter your email" required>
+                <div id="emailError" class="error-message"></div>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" class="form-control" placeholder="Enter your password" required>
+                <div id="passwordError" class="error-message"></div>
+            </div>
+            <div class="form-group">
+                <label for="role">I am a</label>
+                <select id="role" name="role" class="form-control" required>
+                    <option value="">Select role</option>
+                    <option value="student">Student/Applicant</option>
+                    <option value="recruiter">Recruiter/University</option>
+                </select>
+                <div id="roleError" class="error-message"></div>
+            </div>
+            <button type="submit" class="btn btn-primary">Login</button>
+            <div class="auth-form-footer">
+                <p>Forgot password? <a href="#">Reset it here</a></p>
+                <p>Don't have an account? <a href="{{ url_for('register') }}">Sign Up</a></p>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        const loginForm = document.getElementById('loginForm');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const roleInput = document.getElementById('role');
+        const emailError = document.getElementById('emailError');
+        const passwordError = document.getElementById('passwordError');
+        const roleError = document.getElementById('roleError');
+
+        loginForm.addEventListener('submit', (event) => {
+            let isValid = true;
+
+            emailError.textContent = '';
+            passwordError.textContent = '';
+            roleError.textContent = '';
+
+            const emailValue = emailInput.value.trim();
+            const passwordValue = passwordInput.value.trim();
+            const roleValue = roleInput.value;
+
+            if (!emailValue) {
+                emailError.textContent = 'Email is required';
+                isValid = false;
+            } else if (!isValidEmail(emailValue)) {
+                emailError.textContent = 'Invalid email format';
+                isValid = false;
+            }
+
+            if (!passwordValue) {
+                passwordError.textContent = 'Password is required';
+                isValid = false;
+            }
+
+            if (!roleValue) {
+                roleError.textContent = 'Please select a role';
+                isValid = false;
+            }
+
+            if (!isValid) {
+                event.preventDefault(); // Only prevent form submission if invalid
+            }
+        });
+
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+    </script>
+</body>
+</html>

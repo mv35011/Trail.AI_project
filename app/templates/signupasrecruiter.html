@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up as Recruiter</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --primary-hover: #384ec0;
+            --secondary-color: #f8f9fa;
+            --text-color: #212529;
+            --text-muted: #6c757d;
+            --border-color: #dee2e6;
+            --border-radius: 0.5rem;
+            --box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 2rem;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            font-weight: 500;
+            color: var(--text-color);
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .form-control {
+            display: block;
+            width: 100%;
+            padding: 0.75rem;
+            font-size: 1rem;
+            line-height: 1.5;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            width: 100%;
+            display: block;
+            text-align: center;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 0.5rem 0.75rem rgba(0, 0, 0, 0.1);
+        }
+
+        .error-message {
+            color: #dc3545;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .mt-3 {
+            margin-top: 1rem;
+        }
+
+        .small-text {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Sign Up as Recruiter</h1>
+        <form id="recruiterSignupForm">
+            <div class="form-group">
+                <label for="companyName">Company Name</label>
+                <input type="text" id="companyName" name="companyName" class="form-control" placeholder="Enter your company name" required>
+                <div id="companyNameError" class="error-message"></div>
+            </div>
+            <div class="form-group">
+                <label for="assignedId">Assigned ID</label>
+                <input type="text" id="assignedId" name="assignedId" class="form-control" placeholder="Enter your assigned ID" required>
+                <div id="assignedIdError" class="error-message"></div>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" class="form-control" placeholder="Enter your email" required>
+                <div id="emailError" class="error-message"></div>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" class="form-control" placeholder="Enter your password" required>
+                <div id="passwordError" class="error-message"></div>
+            </div>
+            <div class="form-group">
+                <label for="confirmPassword">Confirm Password</label>
+                <input type="password" id="confirmPassword" name="confirmPassword" class="form-control" placeholder="Confirm your password" required>
+                <div id="confirmPasswordError" class="error-message"></div>
+            </div>
+            <button type="submit" class="btn btn-primary">Sign Up</button>
+            <div class="text-center mt-3">
+                <p class="small-text">Already have an account? <a href="index.html">Login</a></p>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        const recruiterSignupForm = document.getElementById('recruiterSignupForm');
+
+        recruiterSignupForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            let isValid = true;
+
+            const companyName = document.getElementById('companyName').value.trim();
+            const assignedId = document.getElementById('assignedId').value.trim();
+             const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value.trim();
+            const confirmPassword = document.getElementById('confirmPassword').value.trim();
+
+            document.getElementById('companyNameError').textContent = companyName ? '' : 'Company Name is required';
+            document.getElementById('assignedIdError').textContent = assignedId ? '' : 'Assigned ID is required';
+            document.getElementById('emailError').textContent = email ? (isValidEmail(email) ? '' : 'Invalid email format') : 'Email is required';
+            document.getElementById('passwordError').textContent = password ? (password.length >= 8 ? '' : 'Password must be at least 8 characters') : 'Password is required';
+            document.getElementById('confirmPasswordError').textContent = confirmPassword ? (confirmPassword === password ? '' : 'Passwords do not match') : 'Confirm Password is required';
+
+            isValid = isValid && companyName && assignedId && email &&  isValidEmail(email) && password && password.length >= 8 && confirmPassword && confirmPassword === password;
+
+            if (isValid) {
+                const formData = new FormData(recruiterSignupForm);
+                // Simulate sending data
+                console.log(Object.fromEntries(formData.entries()));
+                alert('Recruiter sign up successful!');
+                window.location.href = 'dashboard.html';
+            }
+        });
+
+
+
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trail AI - Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+        /* Global Styles */
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3f37c9;
+            --accent-color: #4895ef;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+            --success-color: #4bb543;
+            --error-color: #ff3333;
+            --warning-color: #f0ad4e;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f7fb;
+            color: var(--dark-color);
+            line-height: 1.6;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: white;
+            box-shadow: var(--box-shadow);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-header {
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 20px;
+        }
+
+        .sidebar-header h3 {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            margin: 0;
+        }
+
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 15px;
+            text-decoration: none;
+            color: var(--dark-color);
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            margin-bottom: 8px;
+        }
+
+        .sidebar-menu a:hover, .sidebar-menu a.active {
+            background-color: rgba(67, 97, 238, 0.1);
+            color: var(--primary-color);
+        }
+
+        .sidebar-menu a i {
+            font-size: 1.2rem;
+            width: 24px;
+            text-align: center;
+        }
+
+        .main-content {
+            flex-grow: 1;
+            padding: 30px;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .dashboard-title {
+            font-size: 2rem;
+            color: var(--dark-color);
+            margin: 0;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--accent-color);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 20px;
+        }
+
+        .stat-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .stat-card-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .stat-card-icon.primary { background-color: var(--primary-color); }
+        .stat-card-icon.success { background-color: var(--success-color); }
+        .stat-card-icon.warning { background-color: var(--warning-color); }
+        .stat-card-icon.accent { background-color: var(--accent-color); }
+
+        .stat-card-info h3 {
+            font-size: 1.8rem;
+            margin: 0;
+            color: var(--dark-color);
+        }
+
+        .stat-card-info p {
+            font-size: 0.9rem;
+            color: #777;
+            margin: 0;
+        }
+
+        .applications-table {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+        }
+
+        .table-header {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .table-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--dark-color);
+            margin: 0;
+        }
+
+        .table-search input {
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 15px 20px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            background-color: #f9f9f9;
+            font-weight: bold;
+            color: #555;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: white;
+        }
+
+        .status-badge.pending { background-color: #ffc107; color: #212529;}
+        .status-badge.reviewed { background-color: #17a2b8; color: #fff; }
+        .status-badge.interview { background-color: #28a745; color: #fff; }
+        .status-badge.rejected { background-color: #dc3545; color: #fff; }
+
+        .action-buttons button {
+            background: none;
+            border: none;
+            color: var(--primary-color);
+            cursor: pointer;
+            margin-right: 8px;
+            font-size: 1rem;
+        }
+
+        .action-buttons button:hover {
+            opacity: 0.8;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                margin-bottom: 20px;
+            }
+            .dashboard-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            .user-profile {
+                justify-content: flex-end;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            .table-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            .table-search {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h3>Trail AI</h3>
+        </div>
+        <nav class="sidebar-menu">
+            <a href="dashboard.html" class="active">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="#">
+                <i class="fas fa-briefcase"></i>
+                <span>Applications</span>
+            </a>
+            <a href="#">
+                <i class="fas fa-user"></i>
+                <span>Profile</span>
+            </a>
+            <a href="#">
+                <i class="fas fa-bell"></i>
+                <span>Notifications</span>
+            </a>
+            <a href="#">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </a>
+            <a href="index.html" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </a>
+        </nav>
+    </div>
+
+    <div class="main-content">
+        <div class="dashboard-header">
+            <h1 class="dashboard-title">Dashboard</h1>
+            <div class="user-profile">
+                <div class="user-avatar">JS</div>
+                <span id="userName">John Smith</span>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-card-header">
+                    <div class="stat-card-info">
+                        <h3 id="totalApplications">24</h3>
+                        <p>Total Applications</p>
+                    </div>
+                    <div class="stat-card-icon primary">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-card-header">
+                    <div class="stat-card-info">
+                        <h3 id="pendingReview">8</h3>
+                        <p>Pending Review</p>
+                    </div>
+                    <div class="stat-card-icon warning">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-card-header">
+                    <div class="stat-card-info">
+                        <h3 id="inInterview">5</h3>
+                        <p>In Interview</p>
+                    </div>
+                    <div class="stat-card-icon success">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-card-header">
+                    <div class="stat-card-info">
+                        <h3 id="successRate">42%</h3>
+                        <p>Success Rate</p>
+                    </div>
+                    <div class="stat-card-icon accent">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="applications-table">
+            <div class="table-header">
+                <h2 class="table-title">Recent Applications</h2>
+                <div class="table-search">
+                    <input type="text" id="searchApplications" placeholder="Search applications...">
+                </div>
+            </div>
+            <table id="applicationsTable">
+                <thead>
+                    <tr>
+                        <th>Position</th>
+                        <th>University</th>
+                        <th>Date Applied</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Assistant Professor - Computer Science</td>
+                        <td>Stanford University</td>
+                        <td>May 15, 2025</td>
+                        <td><span class="status-badge interview">Interview</span></td>
+                        <td class="action-buttons">
+                            <button><i class="fas fa-eye"></i></button>
+                            <button><i class="fas fa-edit"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Research Associate - AI</td>
+                        <td>MIT</td>
+                        <td>May 10, 2025</td>
+                        <td><span class="status-badge reviewed">Reviewed</span></td>
+                        <td class="action-buttons">
+                            <button><i class="fas fa-eye"></i></button>
+                            <button><i class="fas fa-edit"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Postdoctoral Fellow - Machine Learning</td>
+                        <td>University of Toronto</td>
+                        <td>May 5, 2025</td>
+                        <td><span class="status-badge pending">Pending</span></td>
+                        <td class="action-buttons">
+                            <button><i class="fas fa-eye"></i></button>
+                            <button><i class="fas fa-edit"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Lecturer - Data Science</td>
+                        <td>University of London</td>
+                        <td>April 28, 2025</td>
+                        <td><span class="status-badge rejected">Rejected</span></td>
+                        <td class="action-buttons">
+                            <button><i class="fas fa-eye"></i></button>
+                            <button><i class="fas fa-edit"></i></button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+       const logoutBtn = document.getElementById('logoutBtn');
+       const applicationsTable = document.getElementById('applicationsTable');
+       const searchInput = document.getElementById('searchApplications');
+       const userNameDisplay = document.getElementById('userName');
+
+        // Sample user data (replace with actual data from your application)
+        const userData = {
+            name: "John Smith",
+        };
+
+        // Sample application data (replace with actual data)
+        const applications = [
+            {
+                position: "Assistant Professor - Computer Science",
+                university: "Stanford University",
+                dateApplied: "May 15, 2025",
+                status: "Interview",
+            },
+            {
+                position: "Research Associate - AI",
+                university: "MIT",
+                dateApplied: "May 10, 2025",
+                status: "Reviewed",
+            },
+            {
+                position: "Postdoctoral Fellow - Machine Learning",
+                university: "University of Toronto",
+                dateApplied: "May 5, 2025",
+                status: "Pending",
+            },
+            {
+                position: "Lecturer - Data Science",
+                university: "University of London",
+                dateApplied: "April 28, 2025",
+                status: "Rejected",
+            },
+        ];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Update user name in the dashboard
+            userNameDisplay.textContent = userData.name;
+
+            // Populate the applications table
+            populateApplicationsTable(applications);
+
+            // Add event listener for the logout button
+            logoutBtn.addEventListener('click', () => {
+                // Redirect to the index page
+                window.location.href = 'index.html';
+            });
+
+            // Add event listener for the search input
+            searchInput.addEventListener('input', () => {
+                const searchTerm = searchInput.value.toLowerCase();
+                const filteredApplications = applications.filter((application) => {
+                    return (
+                        application.position.toLowerCase().includes(searchTerm) ||
+                        application.university.toLowerCase().includes(searchTerm) ||
+                        application.status.toLowerCase().includes(searchTerm)
+                    );
+                });
+                populateApplicationsTable(filteredApplications);
+            });
+        });
+
+        function populateApplicationsTable(applications) {
+            const tableBody = applicationsTable.querySelector('tbody');
+            tableBody.innerHTML = ''; // Clear the table body
+
+            applications.forEach((application) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${application.position}</td>
+                    <td>${application.university}</td>
+                    <td>${application.dateApplied}</td>
+                    <td><span class="status-badge ${getStatusBadgeClass(application.status)}">${application.status}</span></td>
+                    <td class="action-buttons">
+                        <button><i class="fas fa-eye"></i></button>
+                        <button><i class="fas fa-edit"></i></button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        function getStatusBadgeClass(status) {
+            switch (status) {
+                case 'Pending':
+                    return 'pending';
+                case 'Reviewed':
+                    return 'reviewed';
+                case 'Interview':
+                    return 'interview';
+                case 'Rejected':
+                    return 'rejected';
+                default:
+                    return '';
+            }
+        }
+    </script>
+</body>
+</html>

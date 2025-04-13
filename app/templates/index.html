@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trail AI - Automating Job Applications</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+        /* Global Styles */
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3f37c9;
+            --accent-color: #4895ef;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+            --success-color: #4bb543;
+            --error-color: #ff3333;
+            --warning-color: #f0ad4e;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f7fb;
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+            border: none;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: var(--box-shadow);
+        }
+
+        .hero {
+            padding: 80px 0;
+            background: linear-gradient(135deg, var(--primary-color) 0%, #3a0ca3 100%);
+            color: white;
+            text-align: center;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 20px 0;">
+                <div style="font-size: 1.8rem; font-weight: 700; color: var(--primary-color);">Trail <span style="color: var(--accent-color);">AI</span></div>
+                <nav>
+                    <a href="features.html" style="text-decoration: none; color: var(--primary-color); transition: var(--transition); font-weight: 600; padding: 8px 16px; border-radius: var(--border-radius);">Features</a>
+                    <a href="how-it-works.html" style="text-decoration: none; color: var(--primary-color); transition: var(--transition); font-weight: 600; padding: 8px 16px; border-radius: var(--border-radius);">How It Works</a>
+                    <a href="pricing.html" style="text-decoration: none; color: var(--primary-color); transition: var(--transition); font-weight: 600; padding: 8px 16px; border-radius: var(--border-radius);">Pricing</a>
+                    <a href="login.html" class="btn">Login</a>
+                    <a href="signup.html" class="btn btn-primary">Sign Up</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Automating Job Applications for Universities with AI</h1>
+            <p>Streamline your hiring process or find your dream academic position with our intelligent matching system.</p>
+            <div class="hero-buttons">
+                <a href="signup.html?role=student" class="btn btn-primary btn-large">Sign up as Student</a>
+                <a href="signup.html?role=recruiter" class="btn btn-secondary btn-large">Sign up as Recruiter</a>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Basic JavaScript for index.html if needed
+    </script>
+</body>
+</html>
