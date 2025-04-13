@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile | Trail AI</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+        /* Your existing styles are maintained and used from the provided CSS */
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h3>Trail AI</h3>
+        </div>
+        <div class="sidebar-menu">
+            <a href="{{ url_for('dashboard') }}"><i class="fas fa-home"></i> Dashboard</a>
+            <a href="#" class="active"><i class="fas fa-user"></i> Profile</a>
+            <a href="#"><i class="fas fa-users"></i> Connect</a>
+            <a href="#"><i class="fas fa-briefcase"></i> Jobs</a>
+            <a href="#"><i class="fas fa-cog"></i> Settings</a>
+            <a href="{{ url_for('auth.logout') }}"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </div>
+    </div>
+
+    <div class="main-content">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div class="flash-messages">
+            {% for category, message in messages %}
+            <div class="flash-message {{ category }}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
+
+        <div class="profile-container">
+            <div class="profile-header">
+                <div class="profile-avatar">
+                    {{ user.name[0] | upper }}
+                </div>
+                <div class="profile-info">
+                    <h1>{{ user.name }}</h1>
+                    <p>{{ user.department }} at {{ user.college_name }}</p>
+                    <p>CGPA: {{ user.cgpa }}</p>
+                    <div class="profile-links">
+                        {% if user.linkedin %}
+                        <a href="{{ user.linkedin }}" target="_blank" class="profile-link">
+                            <i class="fab fa-linkedin"></i> LinkedIn
+                        </a>
+                        {% endif %}
+                        {% if user.github %}
+                        <a href="{{ user.github }}" target="_blank" class="profile-link">
+                            <i class="fab fa-github"></i> GitHub
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="user-card-score">
+                    {{ user.resume_score }} / 100
+                </div>
+            </div>
+
+            <div class="profile-details">
+                <div class="detail-card">
+                    <h3>About</h3>
+                    <p>{{ user.about_yourself }}</p>
+                </div>
+                <div class="detail-card">
+                    <h3>Education</h3>
+                    <p><strong>{{ user.college_name }}</strong></p>
+                    <p>Department: {{ user.department }}</p>
+                    <p>CGPA: {{ user.cgpa }}</p>
+                </div>
+                <div class="detail-card">
+                    <h3>Contact</h3>
+                    <p>Email: {{ user.email }}</p>
+                </div>
+            </div>
+
+            <div class="profile-skills">
+                <h2>Skills</h2>
+                <div class="skills-container">
+                    {% for skill in user.skills %}
+                    <span class="skill-tag">{{ skill }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="resume-container">
+                <h2>Resume</h2>
+                <a href="{{ url_for('auth.download_resume', user_id=user._id) }}" class="resume-download">
+                    <i class="fas fa-download"></i> Download Resume
+                </a>
+            </div>
+
+            <!-- AI Tools Section -->
+            <div class="tools-section">
+                <h2>AI Tools</h2>
+                <div class="tools-grid">
+                    <a href="{{ url_for('auth.tools', tool_name='resume-builder') }}" class="tool-card">
+                        <div class="tool-icon">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <h3 class="tool-name">Resume Builder</h3>
+                        <p class="tool-description">Create a professional resume tailored to your skills and experience.</p>
+                    </a>
+
+                    <a href="{{ url_for('auth.tools', tool_name='career-roadmap') }}" class="tool-card">
+                        <div class="tool-icon">
+                            <i class="fas fa-road"></i>
+                        </div>
+                        <h3 class="tool-name">Roadmap Generator</h3>
+                        <p class="tool-description">Get a personalized career roadmap based on your skills and goals.</p>
+                    </a>
+
+                    <a href="{{ url_for('auth.tools', tool_name='email-generator') }}" class="tool-card">
+                        <div class="tool-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <h3 class="tool-name">Custom Email Generator</h3>
+                        <p class="tool-description">Generate professional emails for job applications and networking.</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Add any JavaScript functionality if needed
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize any needed functionality
+        });
+    </script>
+</body>
+</html>
