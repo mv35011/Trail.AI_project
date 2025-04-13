@@ -95,7 +95,7 @@ def login():
 def register():
     if request.method == 'POST':
         try:
-            # Get form data
+            
             name = request.form.get('studentName')
             college_name = request.form.get('collegeName')
             email = request.form.get('collegeEmail')
@@ -110,7 +110,6 @@ def register():
             linkedin = request.form.get('linkedin', '')
             github = request.form.get('github', '')
 
-            # Handle profile image
             if 'profile_image' in request.files and request.files['profile_image'].filename != '':
                 profile_image = request.files['profile_image']
             else:
@@ -122,40 +121,37 @@ def register():
                     content_type='image/png',
                 )
 
-            # Validate passwords
             if password != confirm_password:
                 flash('Passwords do not match', 'error')
                 return render_template('register.html')
 
-            # Check if email already exists
+      
             if users_collection.find_one({'email': email}):
                 flash('Email already registered', 'error')
                 return render_template('register.html')
 
-            # Process skills
+   
             skills = [skill.strip() for skill in skills_text.split(',') if skill.strip()]
 
-            # Save profile image
+        
             file_name = secure_filename(profile_image.filename)
             profile_path = os.path.join(UPLOAD_FOLDERS['profile_images'], file_name)
             profile_image.save(profile_path)
 
-            # Save resume
             unique_name = generate_unique_filename(name, secure_filename(resume.filename))
             resume_path = os.path.join(UPLOAD_FOLDERS['resumes'], unique_name)
             resume.save(resume_path)
 
-            # Handle resume scoring - with fallback if model is missing
             try:
                 scorer = ResumeScorer(groq_api_key=groq_api_key, resume_pdf_path=resume_path)
                 score = scorer.run_scorer()
             except Exception as scorer_error:
                 logger.error(f"Resume scoring failed: {scorer_error}")
-                # Fallback to a default score if the scorer fails
-                score = 75  # Default reasonable score
+               
+                score = 75 
                 flash('Resume scoring temporarily unavailable. Using default score.', 'warning')
 
-            # Hash password and prepare user data
+
             hashed_password = generate_password_hash(password, method='pbkdf2:sha256')
             with open(resume_path, 'rb') as f:
                 resume_binary = f.read()
@@ -178,18 +174,17 @@ def register():
                 "role": "student"
             }
 
-            # Insert user to database
             result = users_collection.insert_one(user_data)
 
             if result.inserted_id:
                 try:
-                    # Try to index the user for search, but continue if it fails
+                 
                     search_engine.index_user(result.inserted_id)
                 except Exception as index_error:
                     logger.error(f"User indexing failed: {index_error}")
                     flash('User registered successfully, but search indexing is temporarily unavailable.', 'warning')
 
-                # Create a session for the user
+              
                 user = User(user_data)
                 login_user(user)
                 session['user_id'] = str(result.inserted_id)
@@ -235,7 +230,6 @@ def profile(user_id):
             flash('User not found', 'error')
             return redirect(url_for('dashboard'))
 
-        # Convert ObjectId to string for serialization
         user['_id'] = str(user['_id'])
 
         return render_template('profile.html',
@@ -259,14 +253,13 @@ def search():
 
     try:
         if use_ai:
-            # Using AI search
+    
             search_results = search_engine.smart_search(query, limit=5, use_ai=True)
             candidates = search_results.get('candidates', [])
         else:
-            # Using basic search
+         
             candidates = search_engine.basic_search(query, limit=5)
 
-        # Format results for frontend
         results = []
         for candidate in candidates:
             results.append({
@@ -307,7 +300,6 @@ def download_resume(user_id):
             flash('User not found', 'error')
             return redirect(url_for('auth.dashboard'))
 
-        # Create a BytesIO object from the binary resume data
         if 'resume_pdf' in user:
             resume_data = io.BytesIO(user['resume_pdf'])
             filename = os.path.basename(user.get('resume_path', 'resume.pdf'))
